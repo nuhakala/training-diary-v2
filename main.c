@@ -4,7 +4,7 @@
 #include <wchar.h>
 #include <assert.h>
 
-#include "csv-utilities.h"
+#include "csv_utilities.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,8 +25,9 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	struct csv_header *header = malloc(sizeof(struct csv_header));
-	parse_header(buff, header);
+	struct csv_line *header = malloc(sizeof(struct csv_line));
+	parse_csv_line(buff, header);
+        check_header(header);
 
 	printf("jottain: %ls, %ls, %ls\n", header->date, header->time,
 	       header->type);

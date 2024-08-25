@@ -1,2 +1,6 @@
 all:
-	gcc -Wall main.c csv-utilities.c -o main
+	gcc -Wall -DDEBUG main.c csv_utilities.c -o main
+	./main
+
+build:
+	gcc -Wall main.c csv_utilities.c -o main
