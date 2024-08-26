@@ -34,11 +34,11 @@ int parse_csv_line(wchar_t *line, struct csv_line *out)
 		word[word_index] = current;
 		if (current == ',' || current == L'\n') {
 			wchar_t *field =
-				malloc(sizeof(wchar_t) * (word_index + 1));
+				malloc(sizeof(wchar_t) * (word_index + 2));
+                        // add 2 to prevent random malloc error
                         if (!field) return -1;
 			wcscpy(field, word);
                         field[word_index] = L'\0';
-                        printf("%ls\n", field);
 			*header_field = field;
 			header_field++;
 
@@ -53,28 +53,26 @@ int parse_csv_line(wchar_t *line, struct csv_line *out)
 	} while (current != L'\n');
 
 	assert(num_columns == NUM_HEADERS);
-        d_printf("Line parsed\n");
 	return 0;
 }
 
-int free_header(struct csv_line *header)
+int free_csv_line(struct csv_line *line)
 {
-	free(header->heart_rate);
-	free(header->distance);
-	free(header->time);
-	free(header->heart_rate_max);
-	free(header->type);
-	free(header->evaluation);
-	free(header->date);
-	free(header->description);
-	free(header);
-	d_printf("Header freed\n");
+	free(line->heart_rate);
+	free(line->distance);
+	free(line->time);
+	free(line->heart_rate_max);
+	free(line->type);
+	free(line->evaluation);
+	free(line->date);
+	free(line->description);
+	free(line);
+	d_printf("Line freed\n");
 	return 0;
 }
 
 int check_header(struct csv_line *header)
 {
-        printf("%ls\n%ls\n", header->date, default_header.date);
 	assert(!wcscmp(header->date, default_header.date));
 	assert(!wcscmp(header->type, default_header.type));
 	assert(!wcscmp(header->time, default_header.time));
