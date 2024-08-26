@@ -1,7 +1,10 @@
 all:
-	gcc -Wall -DDEBUG main.c csv_utilities.c training_utilities.c -o main
-	./main
+	gcc -Wall -DDEBUG statistics_tool.c csv_utilities.c training_utilities.c -o statistics_tool.o
+	./statistics_tool.o
 
 build:
-	gcc -Wall main.c csv_utilities.c training_utilities.c -o main
-	./main
+	gcc -Wall statistics_tool.c csv_utilities.c training_utilities.c -o statistics_tool.o
+	./statistics_tool.o
+
+clear:
+	rm ./*.o

@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
 	struct csv_line *header = malloc(sizeof(struct csv_line));
 	parse_csv_line(buff, header);
         check_header(header);
+        free_csv_line(header);
 
         struct training_data run = {RUN,0,0,0,0,0,0,0,0,0,0};
         struct training_data arms = {GYM_ARMS,0,0,0,0,0,0,0,0,0,0};
@@ -72,6 +73,5 @@ int main(int argc, char *argv[])
 
 	fclose(fp);
 	free(buff);
-        free_csv_line(header);
 	return 0;
 }
