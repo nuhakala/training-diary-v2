@@ -1,11 +1,9 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 #include <assert.h>
 
 #include "csv_utilities.h"
-#include "debug_prints.h"
 
 int check_header(struct csv_line *out);
 
@@ -67,7 +65,6 @@ int free_csv_line(struct csv_line *line)
 	free(line->date);
 	free(line->description);
 	free(line);
-	d_printf("Line freed\n");
 	return 0;
 }
 

@@ -6,6 +6,7 @@
 
 #include "csv_utilities.h"
 #include "training_utilities.h"
+#include "debug_prints.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
         setlocale(LC_CTYPE, "fi_FI.UTF-8");
 
 	FILE *fp;
-	fp = fopen("./treenit.csv", "r");
+	fp = fopen("./data/2024.csv", "r");
 
 	if (!fp) {
 		printf("File not found");
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
 	parse_csv_line(buff, header);
         check_header(header);
         free_csv_line(header);
+        d_printf("Header parsed and checked\n");
 
         struct training_data run = {RUN,0,0,0,0,0,0,0,0,0,0};
         struct training_data arms = {GYM_ARMS,0,0,0,0,0,0,0,0,0,0};
@@ -57,19 +59,22 @@ int main(int argc, char *argv[])
                 }
                 free_csv_line(line);
         }
+        d_printf("File read and data collected\n");
 
         printf("Juoksu:\n");
         print_training_data(&run, 1);
-        printf("\n\nSali ylävartalo:\n");
+        printf("Sali ylävartalo:\n");
         print_training_data(&arms, 0);
-        printf("\n\nSali jalat:\n");
+        printf("Sali jalat:\n");
         print_training_data(&legs, 0);
-        printf("\n\nKävely:\n");
+        printf("Kävely:\n");
         print_training_data(&walk, 1);
-        printf("\n\nCrossfit:\n");
+        printf("Crossfit:\n");
         print_training_data(&crossfit, 0);
-        printf("\n\nUinti:\n");
+        printf("Uinti:\n");
         print_training_data(&swim, 1);
+
+        d_printf("Cleaning up\n");
 
 	fclose(fp);
 	free(buff);

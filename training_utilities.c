@@ -30,15 +30,19 @@ int parse_seconds_from_string(wchar_t *in, int *time)
 {
 	int minutes = 0, seconds = 0;
 	int res = swscanf(in, L"%d.%d", &minutes, &seconds);
+        if (seconds > 60 || minutes < 0) {
+                return -1;
+        }
 	*time = minutes * 60 + seconds;
 	return res;
 }
 
 int parse_meters_from_string(wchar_t *in, int *value)
 {
-	int km = 0, meters = 0;
-	int res = swscanf(in, L"%d.%d", &km, &meters);
-	*value = km * 1000 + meters;
+        double km = 0;
+	int res = swscanf(in, L"%lf", &km);
+        if (km < 0) return -1;
+        *value = km * 1000;
 	return res;
 }
 
@@ -46,9 +50,11 @@ int parse_meters_from_string(wchar_t *in, int *value)
  * @param in time in seconds
  * @param out string to write the result
  * @param max max characters to write
+ * @return number of characters written
  */
 int time_to_string(int in, char *out, int max)
 {
+        if (in < 0) return -1;
 	int minutes = in / 60;
 	int hours = minutes / 60;
 	int seconds = in % 60;
@@ -59,6 +65,12 @@ int time_to_string(int in, char *out, int max)
 	}
 }
 
+/**
+ * @param in distance in meters
+ * @param out string to write the number to in kilometers
+ * @param max max characters to write
+ * @return number of characters written
+ */
 int distance_to_string(int *in, char *out, int max)
 {
 	int km = *in / 1000;
@@ -110,7 +122,7 @@ int print_training_data(struct training_data *data, int include_distance)
 	time_to_string(data->time, time_total, 10);
 	int time = data->amount_time > 0 ? data->time / data->amount_time : 0;
 	time_to_string(time, time_avg, 10);
-	printf("Yhteensä %s, keskimäärin %s per kerta\n", time_total, time_avg);
+	printf("Aikaa tuhlattu yhteensä %s, keskimäärin %s per kerta\n", time_total, time_avg);
 
 	int hr_avg = data->amount_heart_rate > 0 ?
 			     data->heart_rate / data->amount_heart_rate :
@@ -118,15 +130,19 @@ int print_training_data(struct training_data *data, int include_distance)
 	printf("Keskisyke %d, korkein kaikista %d\n", hr_avg,
 	       data->heart_rate_max);
 
-        if (include_distance) {
-                char dist_total[12] = { 0 }, dist_avg[11] = { 0 };
-                distance_to_string(&data->distance, dist_total, 11);
-                int dist_avg_meter = data->amount_distance > 0 ?
-                        data->distance / data->amount_distance :
-                        0;
-                distance_to_string(&dist_avg_meter, dist_avg, 10);
-                printf("Matkaa yhteensä %s, keskimäärin %s\n", dist_total, dist_avg);
-        }
+	if (include_distance) {
+		char dist_total[12] = { 0 }, dist_avg[11] = { 0 };
+		distance_to_string(&data->distance, dist_total, 11);
+		int dist_avg_meter =
+			data->amount_distance > 0 ?
+				data->distance / data->amount_distance :
+				0;
+		distance_to_string(&dist_avg_meter, dist_avg, 10);
+		printf("Matkaa yhteensä %s, keskimäärin %s\n", dist_total,
+		       dist_avg);
+	}
+
+        printf("\n");
 
 	return 0;
 }
