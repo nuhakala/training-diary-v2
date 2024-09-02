@@ -10,6 +10,7 @@ int check_header(struct csv_line *out);
 struct csv_line default_header = {
 	.date = L"Päivämäärä [dd-mm-yyyy]",
 	.type = L"Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u')]",
+	/*.type = L"Tyyppi",*/
 	.time = L"Kesto [mmm:ss]",
 	.heart_rate = L"Syke avg",
 	.heart_rate_max = L"Syke max",
