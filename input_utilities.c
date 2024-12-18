@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 
@@ -25,40 +26,52 @@ int read_first_n_wide(FILE *in, wchar_t *out, int n)
 	return 0;
 }
 
-int read_first_n(FILE *in, char *out, int n)
+int read_first_n(FILE *in, char *out, size_t n, char * header)
 {
-	fgets(out, n, in);
-	int size = strlen(out);
-	/*if (size < n) {*/
-	/*	out[size] = '\0';*/
-        if (size >= n)
+	char *buffer;
+	size_t bufsize = n;
+	size_t characters;
+
+	buffer = (char *)malloc(n * sizeof(char));
+	if( buffer == NULL)
 	{
-                int next = fgetc(in);
-                while (next != EOF) {
-                        next = fgetc(in);
-                }
-        }
-	return 0;
+		perror("Unable to allocate buffer");
+		exit(1);
+	}
+
+	printf("%s", header);
+	characters = getline(&buffer, &bufsize, stdin);
+	strncpy(out, buffer, n - 1);
+	out[n] = '\0';
+
+	free(buffer);
+	return characters;
 }
 
-int read_last_n(FILE *in, wchar_t *out, int n)
+int read_last_n(FILE *in, char *out, int n, char * header)
 {
-	fgetws(out, n, in);
-	int size = wcslen(out);
-        if (size == 0) return -1;
-        // note that size <= n - 1
-	if (out[size] == '\n') {
-		out[size] = '\0';
-                return 0;
-	} else {
-                char next = fgetwc(in);
-                while (next != '\n' || next != EOF) {
-                        for (int i = 0; i < size - 1; i++) {
-                                out[i] = out[i + 1];
-                        }
-                        out[size] = next;
-                        next = fgetwc(in);
-                }
-        }
-	return 0;
+	char *buffer;
+	size_t bufsize = n;
+	size_t characters;
+
+	buffer = (char *)malloc(bufsize * sizeof(char));
+	if( buffer == NULL)
+	{
+		perror("Unable to allocate buffer");
+		exit(1);
+	}
+
+	printf("%s", header);
+	characters = getline(&buffer, &bufsize, stdin);
+
+	// calculate boundaries and copy the result
+	int start = characters - n;
+	if (start < 0) start = 0;
+	int end = start + n;
+	if (end > characters) end = characters - start - 1;
+	strncpy(out, buffer + start, end);
+	out[end] = '\0';
+
+	free(buffer);
+	return characters;
 }
