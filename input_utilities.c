@@ -7,9 +7,8 @@
 #include "debug_prints.h"
 #include "utf8.h"
 
-char *read_char_input(char *header, char *options)
+char *read_char_input(char *header, const char *options)
 {
-#pragma GCC diagnostic ignored "-Wuninitialized"
 	char *p;
 	while (1) {
 		read_first_n(stdin, &p, 1, header);
@@ -25,9 +24,18 @@ char *read_time_input(char *header)
 	char *p;
 	while (1) {
 		read_first_n(stdin, &p, 10, header);
-		int hours, seconds;
-		if (sscanf(p, "%d.%d", &hours, &seconds) == 2)
+		int hours, seconds = 0;
+		int a = sscanf(p, "%d.%d", &hours, &seconds);
+		if (a == -1) { // allow empty input
+			strcpy(p, "");
 			return p;
+		}
+		// I guess I should check that the number are between 0-60 but
+		// I am lazy >:D
+		if (a >= 1) {
+			sprintf(p, "%d.%d", hours, seconds);
+			return p;
+		}
 	}
 }
 
@@ -44,9 +52,15 @@ char *read_int_input(char *header, int low, int up)
 	while (1) {
 		read_first_n(stdin, &p, 4, header);
 		int num;
-		if (sscanf(p, "%d", &num) < 1) continue;
-		if (num >= low && num <= up)
+		sscanf(p, "%d", &num);
+		if (sscanf(p, "%d", &num) == -1) { // allow empty input
+			strcpy(p, "");
 			return p;
+		}
+		if (num >= low && num <= up) {
+			sprintf(p, "%d", num);
+			return p;
+		}
 	}
 }
 
@@ -55,10 +69,16 @@ char *read_double_input(char *header, double low, double up)
 	char *p;
 	while (1) {
 		read_first_n(stdin, &p, 10, header);
-		double num;
-		if (sscanf(p, "%lf", &num) < 1) continue;
-		if (num >= low && num <= up)
+		int km, meters = 0;
+		int a = sscanf(p, "%d.%d", &km, &meters);
+		if (a == -1) { // allow empty input
+			strcpy(p, "");
 			return p;
+		}
+		if (a >= 1 && km >= low && km <= up) {
+			sprintf(p, "%d.%d", km, meters);
+			return p;
+		}
 	}
 }
 
@@ -108,7 +128,7 @@ int read_last_n(FILE *in, char **out, int n, char *header)
 	int u8_end = u8_offset(buffer, end);
 	// strncpy(out, buffer + u8_start, u8_end);
 	// out[u8_end - 1] = '\0';
-	char * res;
+	char *res;
 	res = (char *)malloc(4 * (u8_end - u8_start) * sizeof(char));
 	strncpy(res, buffer + u8_start, u8_end);
 	res[u8_end - 1] = '\0';

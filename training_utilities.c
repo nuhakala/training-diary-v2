@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+const char training_types[] =  { 'j', 'y', 'a', 'h', 'k', 'c', 'u' };
+
 int parse_int_value(wchar_t *in, int *value)
 {
 	return swscanf(in, L"%d", value);

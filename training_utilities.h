@@ -10,6 +10,8 @@
 #define CROSSFIT L"c"
 #define SWIM L"u"
 
+extern const char training_types[];
+
 struct training_data {
 	wchar_t *type;
 	int amount_total;

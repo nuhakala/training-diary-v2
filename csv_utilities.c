@@ -1,11 +1,10 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 #include <assert.h>
 
 #include "csv_utilities.h"
-
-int check_header(struct csv_line *out);
 
 struct csv_line default_header = {
 	.date = L"Päivämäärä [dd-mm-yyyy]",
@@ -80,5 +79,21 @@ int check_header(struct csv_line *header)
 	assert(!wcscmp(header->distance, default_header.distance));
 	assert(!wcscmp(header->evaluation, default_header.evaluation));
 	assert(!wcscmp(header->description, default_header.description));
+	return 0;
+}
+
+int write_csv_line(struct csv_line_u8 *line, char *file_name)
+{
+	FILE *fptr;
+	fptr = fopen(file_name, "a");
+	fprintf(fptr, "%s,", line->date);
+	fprintf(fptr, "%s,", line->type);
+	fprintf(fptr, "%s,", line->time);
+	fprintf(fptr, "%s,", line->heart_rate);
+	fprintf(fptr, "%s,", line->heart_rate_max);
+	fprintf(fptr, "%s,", line->distance);
+	fprintf(fptr, "%s,", line->evaluation);
+	fprintf(fptr, "%s", line->description);
+	fclose(fptr); 
 	return 0;
 }

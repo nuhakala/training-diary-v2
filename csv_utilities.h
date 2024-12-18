@@ -33,4 +33,7 @@ int parse_csv_line(wchar_t *line, struct csv_line *out);
 int free_csv_line(struct csv_line *header);
 int check_header(struct csv_line *header);
 
+// int get_csv_file_name(char *name);
+int write_csv_line(struct csv_line_u8 *line, char *line_name);
+
 #endif
