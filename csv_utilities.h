@@ -16,6 +16,17 @@ struct csv_line {
 	wchar_t *description;
 };
 
+struct csv_line_u8 {
+	char *date;
+	char *type;
+	char *time;
+	char *heart_rate;
+	char *heart_rate_max;
+	char *distance;
+	char *evaluation;
+	char *description;
+};
+
 #define NUM_HEADERS 8
 extern struct csv_line default_header;
 int parse_csv_line(wchar_t *line, struct csv_line *out);

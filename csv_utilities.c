@@ -34,10 +34,11 @@ int parse_csv_line(wchar_t *line, struct csv_line *out)
 		if (current == ',' || current == L'\n') {
 			wchar_t *field =
 				malloc(sizeof(wchar_t) * (word_index + 2));
-                        // add 2 to prevent random malloc error
-                        if (!field) return -1;
+			// add 2 to prevent random malloc error
+			if (!field)
+				return -1;
 			wcscpy(field, word);
-                        field[word_index] = L'\0';
+			field[word_index] = L'\0';
 			*header_field = field;
 			header_field++;
 
@@ -46,9 +47,9 @@ int parse_csv_line(wchar_t *line, struct csv_line *out)
 			memset(word, 0, sizeof word);
 			num_columns++;
 		} else {
-                        index++;
-                        word_index++;
-                }
+			index++;
+			word_index++;
+		}
 	} while (current != L'\n');
 
 	assert(num_columns == NUM_HEADERS);

@@ -3,21 +3,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-int read_int_input()
-{
-	return 0;
-}
-
-int read_string_input()
-{
-	return 0;
-}
-
-int read_time_input()
-{
-	return 0;
-}
-
 int parse_int_value(wchar_t *in, int *value)
 {
 	return swscanf(in, L"%d", value);

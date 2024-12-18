@@ -25,10 +25,6 @@ struct training_data {
 };
 
 
-int read_int_input();
-int read_string_input();
-int read_time_input();
-
 // For testing purposes, otherwise could be left out
 int parse_seconds_from_string(wchar_t *in, int *time);
 int parse_meters_from_string(wchar_t *in, int *value);
