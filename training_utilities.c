@@ -24,6 +24,17 @@ int parse_seconds_from_string(wchar_t *in, int *time)
 	return res;
 }
 
+int parse_seconds_from_string_(char *in, int *time)
+{
+	int minutes = 0, seconds = 0;
+	int res = scanf(in, "%d.%d", &minutes, &seconds);
+        if (seconds > 60 || minutes < 0) {
+                return -1;
+        }
+	*time = minutes * 60 + seconds;
+	return res;
+}
+
 int parse_meters_from_string(wchar_t *in, int *value)
 {
         double km = 0;
