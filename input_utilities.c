@@ -92,7 +92,7 @@ int read_first_n(FILE *in, char **out, int n, char *header)
 		exit(1);
 	}
 
-	printf("%s", header);
+	printf("%s >>> ", header);
 	getline(&buffer, &bufsize, stdin);
 	int utf8_len = u8_strlen(buffer);
 	int end = utf8_len < n ? utf8_len : n;
@@ -113,7 +113,7 @@ int read_last_n(FILE *in, char **out, int n, char *header)
 		exit(1);
 	}
 
-	printf("%s", header);
+	printf("%s >>> ", header);
 	getline(&buffer, &bufsize, stdin);
 
 	// calculate boundaries and copy the result

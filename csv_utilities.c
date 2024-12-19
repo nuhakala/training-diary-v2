@@ -3,13 +3,24 @@
 #include <string.h>
 #include <wchar.h>
 #include <assert.h>
+#include <unistd.h>
 
 #include "csv_utilities.h"
+
+struct csv_line_u8 default_header_u8 = {
+	.date = u8"Päivämäärä [dd-mm-yyyy]",
+	.type = u8"Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u')]",
+	.time = u8"Kesto [mmm:ss]",
+	.heart_rate = u8"Syke avg",
+	.heart_rate_max = u8"Syke max",
+	.distance = u8"Matka [km]",
+	.evaluation = u8"Arvio omasta jaksamisesta [1-5]",
+	.description = u8"Kuvaus",
+};
 
 struct csv_line default_header = {
 	.date = L"Päivämäärä [dd-mm-yyyy]",
 	.type = L"Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u')]",
-	/*.type = L"Tyyppi",*/
 	.time = L"Kesto [mmm:ss]",
 	.heart_rate = L"Syke avg",
 	.heart_rate_max = L"Syke max",
@@ -84,8 +95,24 @@ int check_header(struct csv_line *header)
 
 int write_csv_line(struct csv_line_u8 *line, char *file_name)
 {
-	FILE *fptr;
-	fptr = fopen(file_name, "a");
+	FILE *fptr = NULL;
+
+	// Initialize header if file does not exist
+	if (access(file_name, F_OK) != 0) {
+		fptr = fopen(file_name, "a");
+		fprintf(fptr, "%s,", default_header_u8.date);
+		fprintf(fptr, "%s,", default_header_u8.type);
+		fprintf(fptr, "%s,", default_header_u8.time);
+		fprintf(fptr, "%s,", default_header_u8.heart_rate);
+		fprintf(fptr, "%s,", default_header_u8.heart_rate_max);
+		fprintf(fptr, "%s,", default_header_u8.distance);
+		fprintf(fptr, "%s,", default_header_u8.evaluation);
+		fprintf(fptr, "%s\n", default_header_u8.description);
+	}
+
+	// write the actual content
+	if (!fptr)
+		fptr = fopen(file_name, "a");
 	fprintf(fptr, "%s,", line->date);
 	fprintf(fptr, "%s,", line->type);
 	fprintf(fptr, "%s,", line->time);
@@ -94,6 +121,6 @@ int write_csv_line(struct csv_line_u8 *line, char *file_name)
 	fprintf(fptr, "%s,", line->distance);
 	fprintf(fptr, "%s,", line->evaluation);
 	fprintf(fptr, "%s", line->description);
-	fclose(fptr); 
+	fclose(fptr);
 	return 0;
 }
