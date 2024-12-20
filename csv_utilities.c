@@ -56,43 +56,6 @@ int parse_csv_line_u8(char *line, struct csv_line_u8 *out)
 	return 0;
 }
 
-int parse_csv_line(wchar_t *line, struct csv_line *out)
-{
-	wchar_t current;
-	int index = 0;
-	int word_index = 0;
-	wchar_t word[LINE_LENGTH];
-	memset(word, 0, sizeof word);
-	wchar_t **header_field = (wchar_t **)out;
-	int num_columns = 0;
-	do {
-		current = line[index];
-		word[word_index] = current;
-		if (current == ',' || current == L'\n') {
-			wchar_t *field =
-				malloc(sizeof(wchar_t) * (word_index + 2));
-			// add 2 to prevent random malloc error
-			if (!field)
-				return -1;
-			wcscpy(field, word);
-			field[word_index] = L'\0';
-			*header_field = field;
-			header_field++;
-
-			word_index = 0;
-			index++;
-			memset(word, 0, sizeof word);
-			num_columns++;
-		} else {
-			index++;
-			word_index++;
-		}
-	} while (current != L'\n');
-
-	assert(num_columns == NUM_HEADERS);
-	return 0;
-}
-
 int free_csv_line(struct csv_line_u8 *line)
 {
 	free(line->heart_rate);

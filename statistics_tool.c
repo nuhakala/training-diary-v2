@@ -37,54 +37,61 @@ int main(int argc, char *argv[])
 	free_csv_line(header);
 	d_printf("Header parsed and checked\n");
 
-	struct training_data run = { RUN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data arms = { GYM_ARMS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data legs = { GYM_LEGS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data walk = { WALK, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data crossfit = { CROSSFIT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data swim = { SWIM, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data all = { "0", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	struct training_data **run = initialize_data_array(RUN, 13);
+	struct training_data **arms = initialize_data_array(GYM_ARMS, 13);
+	struct training_data **legs = initialize_data_array(GYM_LEGS, 13);
+	struct training_data **walk = initialize_data_array(WALK, 13);
+	struct training_data **crossfit = initialize_data_array(CROSSFIT, 13);
+	struct training_data **swim = initialize_data_array(SWIM, 13);
+	struct training_data all = empty_data("0")
 
-	while (getline(&buff, &l, fp) >= 0) {
+		while (getline(&buff, &l, fp) >= 0)
+	{
 		struct csv_line_u8 *line = malloc(sizeof(struct csv_line_u8));
 		parse_csv_line_u8(buff, line);
 
 		aggregate_data_points(&all, line);
 		if (compare_strings_u8(line->type, RUN)) {
-			aggregate_data_points(&run, line);
+			aggregate_data_points_array(run, line);
 		} else if (compare_strings_u8(line->type, GYM_ARMS)) {
-			aggregate_data_points(&arms, line);
+			aggregate_data_points_array(arms, line);
 		} else if (compare_strings_u8(line->type, GYM_LEGS)) {
-			aggregate_data_points(&legs, line);
+			aggregate_data_points_array(legs, line);
 		} else if (compare_strings_u8(line->type, WALK)) {
-			aggregate_data_points(&walk, line);
+			aggregate_data_points_array(walk, line);
 		} else if (compare_strings_u8(line->type, CROSSFIT)) {
-			aggregate_data_points(&crossfit, line);
+			aggregate_data_points_array(crossfit, line);
 		} else if (compare_strings_u8(line->type, SWIM)) {
-			aggregate_data_points(&swim, line);
+			aggregate_data_points_array(swim, line);
 		}
 		free_csv_line(line);
 	}
 	d_printf("File read and data collected\n");
 
-	printf("Koko vuoden tulokset");
-	printf("Juoksu:\n");
-	print_training_data(&run, 1);
-	printf("Sali ylävartalo:\n");
-	print_training_data(&arms, 0);
-	printf("Sali jalat:\n");
-	print_training_data(&legs, 0);
-	printf("Kävely:\n");
-	print_training_data(&walk, 1);
-	printf("Crossfit:\n");
-	print_training_data(&crossfit, 0);
-	printf("Uinti:\n");
-	print_training_data(&swim, 1);
-	printf("Kaikki yhdessä:\n");
+	print_green("Tiedoston %s tilastot:", file_name);
+	print_yellow("Juoksu:");
+	print_training_data_array(run, 13, 1);
+	print_yellow("Sali ylävartalo:");
+	print_training_data_array(arms, 13, 0);
+	print_yellow("Sali jalat:");
+	print_training_data_array(legs, 13, 0);
+	print_yellow("Kävely:");
+	print_training_data_array(walk, 13, 1);
+	print_yellow("Crossfit:");
+	print_training_data_array(crossfit, 13, 0);
+	print_yellow("Uinti:");
+	print_training_data_array(swim, 13, 1);
+	print_yellow("Kaikki yhdessä:");
 	print_training_data(&all, 1);
 
 	d_printf("Cleaning up\n");
 	fclose(fp);
 	free(buff);
+	free_data_array(run, 13);
+	free_data_array(arms, 13);
+	free_data_array(legs, 13);
+	free_data_array(walk, 13);
+	free_data_array(crossfit, 13);
+	free_data_array(swim, 13);
 	return 0;
 }

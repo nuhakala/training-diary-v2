@@ -27,6 +27,8 @@ struct training_data {
 	int amount_evaluation;
 };
 
+#define empty_data(X) { (X), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
 // For testing purposes, otherwise could be left out
 int parse_seconds_from_string(char *in, int *time);
 int parse_seconds_from_string_(char *in, int *time);
@@ -35,6 +37,10 @@ int time_to_string(int in, char *out, int max);
 int distance_to_string(int *in, char *out, int max);
 
 int aggregate_data_points(struct training_data *data, struct csv_line_u8 *line);
+int aggregate_data_points_array(struct training_data **data, struct csv_line_u8 *line);
+int print_training_data_array(struct training_data **in, int n, int include_distance);
 int print_training_data(struct training_data *data, int include_distance);
+struct training_data **initialize_data_array(char *type, int n);
+void free_data_array(struct training_data **a, int n);
 
 #endif // !TRAINING_UTILITIES_H

@@ -1,6 +1,10 @@
-#include "training_utilities.h"
+#include "print_utilities.h"
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "training_utilities.h"
 
 const char training_types[] = { 'j', 'y', 'a', 'h', 'k', 'c', 'u' };
 
@@ -111,6 +115,26 @@ int aggregate_data_points(struct training_data *data, struct csv_line_u8 *line)
 	return 0;
 }
 
+int aggregate_data_points_array(struct training_data **in, struct csv_line_u8 *line)
+{
+	int day, month, year;
+	sscanf(line->date, "%d-%d-%d", &day, &month, &year);
+	aggregate_data_points(in[month], line); // aggregate monthly
+	aggregate_data_points(in[0], line); // aggregate all time
+	return 0;
+}
+
+int print_training_data_array(struct training_data **in, int n, int include_distance)
+{
+	for (int i = 1; i < n; i++) {
+		print_yellow("Kuukausi %d:", i);
+		print_training_data(in[i], include_distance);
+	}
+	print_yellow("Yhteensä:");
+	print_training_data(in[0], include_distance);
+	return 0;
+}
+
 int print_training_data(struct training_data *data, int include_distance)
 {
 	printf("Yhteensä %d kertaa\n", data->amount_total);
@@ -143,4 +167,25 @@ int print_training_data(struct training_data *data, int include_distance)
 	printf("\n");
 
 	return 0;
+}
+
+struct training_data **initialize_data_array(char *type, int n)
+{
+	struct training_data **a = malloc(n * sizeof(struct training_data *));
+	// struct training_data a[n];
+	for (int i = 0; i < n; i++) {
+		struct training_data *d = malloc(sizeof(struct training_data));
+		struct training_data t = empty_data(type);
+		memcpy(d, &t, sizeof(struct training_data));
+		a[i] = d;
+	}
+	return a;
+}
+
+void free_data_array(struct training_data **a, int n)
+{
+	for (int i = 0; i < n; i++) {
+		free(a[i]);
+	}
+	free(a);
 }
