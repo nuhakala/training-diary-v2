@@ -6,7 +6,7 @@
 #include "csv_utilities.h"
 #include "input_utilities.h"
 #include "training_utilities.h"
-#include "debug_prints.h"
+#include "print_utilities.h"
 
 /*
  * TODO:

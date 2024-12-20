@@ -1,4 +1,5 @@
 #ifndef TRAINING_UTILITIES_H
+#define TRAINING_UTILITIES_H
 
 #include <wchar.h>
 #include "csv_utilities.h"

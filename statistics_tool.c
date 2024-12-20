@@ -6,7 +6,7 @@
 
 #include "csv_utilities.h"
 #include "training_utilities.h"
-#include "debug_prints.h"
+#include "print_utilities.h"
 #include "utf8.h"
 
 int main(int argc, char *argv[])
@@ -41,15 +41,15 @@ int main(int argc, char *argv[])
 	struct training_data arms = { GYM_ARMS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	struct training_data legs = { GYM_LEGS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	struct training_data walk = { WALK, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	struct training_data crossfit = {
-		CROSSFIT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	};
+	struct training_data crossfit = { CROSSFIT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	struct training_data swim = { SWIM, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	struct training_data all = { "0", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	while (getline(&buff, &l, fp) >= 0) {
 		struct csv_line_u8 *line = malloc(sizeof(struct csv_line_u8));
 		parse_csv_line_u8(buff, line);
 
+		aggregate_data_points(&all, line);
 		if (compare_strings_u8(line->type, RUN)) {
 			aggregate_data_points(&run, line);
 		} else if (compare_strings_u8(line->type, GYM_ARMS)) {
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 	}
 	d_printf("File read and data collected\n");
 
+	printf("Koko vuoden tulokset");
 	printf("Juoksu:\n");
 	print_training_data(&run, 1);
 	printf("Sali ylävartalo:\n");
@@ -79,6 +80,8 @@ int main(int argc, char *argv[])
 	print_training_data(&crossfit, 0);
 	printf("Uinti:\n");
 	print_training_data(&swim, 1);
+	printf("Kaikki yhdessä:\n");
+	print_training_data(&all, 1);
 
 	d_printf("Cleaning up\n");
 	fclose(fp);

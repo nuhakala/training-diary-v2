@@ -9,7 +9,6 @@
 
 #include "csv_utilities.h"
 #include "utf8.h"
-#include "debug_prints.h"
 
 struct csv_line_u8 default_header_u8 = {
 	.date = "Päivämäärä [dd-mm-yyyy]",

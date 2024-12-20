@@ -1,4 +1,5 @@
 #ifndef INPUT_UTILITIES_H
+#define INPUT_UTILITIES_H
 
 #include <stdio.h>
 #include <wchar.h>

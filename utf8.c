@@ -1,7 +1,6 @@
 #include <sys/types.h>
 
 #include "utf8.h"
-#include "debug_prints.h"
 
 static const u_int32_t offsetsFromUTF8[6] = {
     0x00000000UL, 0x00003080UL, 0x000E2080UL,

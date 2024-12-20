@@ -1,4 +1,5 @@
 #ifndef UTF_8_H_
+#define UTF_8_H_
 
 /*
  * Most of this header and corresponding implementations are copied from

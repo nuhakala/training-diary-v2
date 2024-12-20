@@ -1,5 +1,4 @@
 #include "training_utilities.h"
-#include "debug_prints.h"
 #include <stdio.h>
 #include <assert.h>
 

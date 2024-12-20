@@ -5,17 +5,6 @@
 
 #define LINE_LENGTH 300
 
-struct csv_line {
-	wchar_t *date;
-	wchar_t *type;
-	wchar_t *time;
-	wchar_t *heart_rate;
-	wchar_t *heart_rate_max;
-	wchar_t *distance;
-	wchar_t *evaluation;
-	wchar_t *description;
-};
-
 struct csv_line_u8 {
 	char *date;
 	char *type;
