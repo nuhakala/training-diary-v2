@@ -1,10 +1,22 @@
-#include "utf8.h"
 #include <sys/types.h>
 
-#define isutf(c) (((c)&0xC0)!=0x80)
+#include "utf8.h"
+#include "debug_prints.h"
+
 static const u_int32_t offsetsFromUTF8[6] = {
     0x00000000UL, 0x00003080UL, 0x000E2080UL,
     0x03C82080UL, 0xFA082080UL, 0x82082080UL
+};
+
+static const char trailingBytesForUTF8[256] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, 3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5
 };
 
 /* reads the next utf-8 sequence out of a string, updating an index */
@@ -69,4 +81,58 @@ int u8_charnum(char *s, int offset)
         charnum++;
     }
     return charnum;
+}
+
+int u8_toucs(u_int32_t *dest, int sz, char *src, int srcsz)
+{
+    u_int32_t ch;
+    char *src_end = src + srcsz;
+    int nb;
+    int i=0;
+
+    while (i < sz-1) {
+        nb = trailingBytesForUTF8[(unsigned char)*src];
+        if (srcsz == -1) {
+            if (*src == 0)
+                goto done_toucs;
+        }
+        else {
+            if (src + nb >= src_end)
+                goto done_toucs;
+        }
+        ch = 0;
+        switch (nb) {
+            /* these fall through deliberately */
+        case 3: ch += (unsigned char)*src++; ch <<= 6;
+        case 2: ch += (unsigned char)*src++; ch <<= 6;
+        case 1: ch += (unsigned char)*src++; ch <<= 6;
+        case 0: ch += (unsigned char)*src++;
+        }
+        ch -= offsetsFromUTF8[nb];
+        dest[i++] = ch;
+    }
+ done_toucs:
+    dest[i] = 0;
+    return i;
+}
+
+int compare_strings_u8(char * a, char * b)
+{
+	int a_len = u8_strlen(a);
+	int b_len = u8_strlen(b);
+	if (a_len != b_len) {
+		return 0;
+	};
+	int i = 0;
+	int j = 0;
+	u_int32_t k = u8_nextchar(a, &i);
+	u_int32_t l = u8_nextchar(b, &j);
+	while (k == l && i < a_len) {
+		if (!isutf(k)) return 0;
+		if (k != l) return 0;
+		k = u8_nextchar(a, &i);
+		l = u8_nextchar(b, &j);
+	}
+	if (k != l || i != a_len) return 0;
+	return 1;
 }

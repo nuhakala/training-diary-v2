@@ -1,5 +1,5 @@
 all:
-	gcc -Wall -DDEBUG statistics_tool.c csv_utilities.c training_utilities.c -o statistics_tool.o
+	gcc -Wall -DDEBUG statistics_tool.c csv_utilities.c training_utilities.c utf8.c -o statistics_tool.o
 	gcc -Wall -DDEBUG data_collector.c csv_utilities.c training_utilities.c input_utilities.c utf8.c -o data_collector.o
 
 build:

@@ -4,8 +4,10 @@
 #include <stdio.h>
 
 #ifdef DEBUG
-#define d_printf(fmt, args...) printf("DEBUG: %s:%d: " fmt, __FILE__, __LINE__, ##args)
-#define d_wprintf(fmt, args...) wprintf("DEBUG: %s:%d: " fmt, __FILE__, __LINE__, ##args)
+#define d_printf(fmt, args...) \
+	printf("DEBUG: %s:%d: " fmt, __FILE__, __LINE__, ##args)
+#define d_wprintf(fmt, args...) \
+	wprintf("DEBUG: %s:%d: " fmt, __FILE__, __LINE__, ##args)
 #else
 #define d_printf(fmt, args...)
 #define d_wprintf(fmt, args...)

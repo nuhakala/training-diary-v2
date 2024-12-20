@@ -4,7 +4,6 @@
 #include <wchar.h>
 
 #include "input_utilities.h"
-#include "debug_prints.h"
 #include "utf8.h"
 
 char *read_char_input(char *header, const char *options)

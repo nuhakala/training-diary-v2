@@ -28,13 +28,12 @@ struct csv_line_u8 {
 };
 
 #define NUM_HEADERS 8
-extern struct csv_line default_header;
 extern struct csv_line_u8 default_header_u8;
-int parse_csv_line(wchar_t *line, struct csv_line *out);
-int free_csv_line(struct csv_line *header);
-int check_header(struct csv_line *header);
+int parse_csv_line_u8(char *line, struct csv_line_u8 *out);
+int free_csv_line(struct csv_line_u8 *header);
+int check_header_u8(struct csv_line_u8 *header);
 
-// int get_csv_file_name(char *name);
+char *get_save_file_name(int argc, char *argv[]);
 int write_csv_line(struct csv_line_u8 *line, char *line_name);
 
 #endif
