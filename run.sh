@@ -27,7 +27,7 @@ if [ $# -eq 0 ]; then
 	echo "Print statistics: stat <optional:file_name>"
 fi
 
-source_dir=~/OmatProjektit/training-diary-v2/
+source_dir=./
 if [ "$1" = "collect" ]; then
 	cd ${source_dir}
 	collect $2

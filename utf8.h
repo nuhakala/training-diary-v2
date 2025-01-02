@@ -11,6 +11,7 @@
  */
 
 #include <sys/types.h>
+#include "windows_types.h"
 
 #define isutf(c) (((c)&0xC0)!=0x80)
 
