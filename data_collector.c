@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	struct tm tm = *localtime(&t);
 
 	input->date = (char *)malloc(11 * sizeof(char));
-	sprintf(input->date, "%d-%d-%d", tm.tm_mday, tm.tm_mon, tm.tm_year + 1900);
+	sprintf(input->date, "%02i-%02i-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 	input->type = read_char_input(default_header_u8.type, training_types);
 	input->time = read_time_input(default_header_u8.time);
 	input->heart_rate = read_int_input(default_header_u8.heart_rate, 30, 230);

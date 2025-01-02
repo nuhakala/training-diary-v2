@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	struct training_data **walk = initialize_data_array(WALK, 13);
 	struct training_data **crossfit = initialize_data_array(CROSSFIT, 13);
 	struct training_data **swim = initialize_data_array(SWIM, 13);
+	struct training_data **indoor = initialize_data_array(INDOOR, 13);
 	struct training_data all = empty_data("0")
 
 		while (getline(&buff, &l, fp) >= 0)
@@ -63,6 +64,8 @@ int main(int argc, char *argv[])
 			aggregate_data_points_array(crossfit, line);
 		} else if (compare_strings_u8(line->type, SWIM)) {
 			aggregate_data_points_array(swim, line);
+		} else if (compare_strings_u8(line->type, INDOOR)) {
+			aggregate_data_points_array(indoor, line);
 		}
 		free_csv_line(line);
 	}
@@ -81,6 +84,8 @@ int main(int argc, char *argv[])
 	print_training_data_array(crossfit, 13, 0);
 	print_yellow("Uinti:");
 	print_training_data_array(swim, 13, 1);
+	print_yellow("Sisäliikunta:");
+	print_training_data_array(indoor, 13, 0);
 	print_yellow("Kaikki yhdessä:");
 	print_training_data(&all, 1);
 
@@ -93,5 +98,6 @@ int main(int argc, char *argv[])
 	free_data_array(walk, 13);
 	free_data_array(crossfit, 13);
 	free_data_array(swim, 13);
+	free_data_array(indoor, 13);
 	return 0;
 }

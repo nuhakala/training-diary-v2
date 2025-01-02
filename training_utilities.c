@@ -6,7 +6,7 @@
 
 #include "training_utilities.h"
 
-const char training_types[] = { 'j', 'y', 'a', 'h', 'k', 'c', 'u' };
+const char training_types[] = { 'j', 'y', 'a', 'h', 'k', 'c', 'u', 's' };
 
 int parse_int_value(char *in, int *value)
 {

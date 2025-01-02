@@ -12,7 +12,7 @@
 
 struct csv_line_u8 default_header_u8 = {
 	.date = "Päivämäärä [dd-mm-yyyy]",
-	.type = "Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u')]",
+	.type = "Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u') | Sisäliikunta('s')]",
 	.time = "Kesto [mmm:ss]",
 	.heart_rate = "Syke avg",
 	.heart_rate_max = "Syke max",

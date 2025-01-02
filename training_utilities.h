@@ -10,6 +10,7 @@
 #define WALK "k"
 #define CROSSFIT "c"
 #define SWIM "u"
+#define INDOOR "s"
 
 extern const char training_types[];
 
