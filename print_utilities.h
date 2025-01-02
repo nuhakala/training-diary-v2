@@ -42,4 +42,18 @@
 		printf("%s\n", COLOR_RESET); \
 	} while (0);
 
+#define print_magenta(fmt, args...)    \
+	do {                                 \
+		printf("%s", COLOR_MAGENTA);  \
+		printf(fmt, ##args);         \
+		printf("%s\n", COLOR_RESET); \
+	} while (0);
+
+#define print_cyan(fmt, args...)    \
+	do {                                 \
+		printf("%s", COLOR_CYAN);  \
+		printf(fmt, ##args);         \
+		printf("%s\n", COLOR_RESET); \
+	} while (0);
+
 #endif // !PRINT_UTILITIES_H

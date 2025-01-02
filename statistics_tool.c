@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 	print_training_data_array(swim, 13, 1);
 	print_yellow("Sisäliikunta:");
 	print_training_data_array(indoor, 13, 0);
-	print_yellow("Kaikki yhdessä:");
+	print_green("Kaikki yhdessä:");
 	print_training_data(&all, 1);
 
 	d_printf("Cleaning up\n");

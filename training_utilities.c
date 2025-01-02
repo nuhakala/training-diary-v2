@@ -115,7 +115,8 @@ int aggregate_data_points(struct training_data *data, struct csv_line_u8 *line)
 	return 0;
 }
 
-int aggregate_data_points_array(struct training_data **in, struct csv_line_u8 *line)
+int aggregate_data_points_array(struct training_data **in,
+				struct csv_line_u8 *line)
 {
 	int day, month, year;
 	sscanf(line->date, "%d-%d-%d", &day, &month, &year);
@@ -124,13 +125,22 @@ int aggregate_data_points_array(struct training_data **in, struct csv_line_u8 *l
 	return 0;
 }
 
-int print_training_data_array(struct training_data **in, int n, int include_distance)
+int print_training_data_array(struct training_data **in, int n,
+			      int include_distance)
 {
+	char *months[13] = { "Yhteensä", "Tammikuu", "Helmikuu", "Maaliskuu",
+			     "Huhtikuu", "Toukokuu", "Kesäkuu",	 "Heinäkuu",
+			     "Elokuu",	 "Syyskuu",  "Lokakuu",	 "Marraskuu",
+			     "Joulukuu" };
+
 	for (int i = 1; i < n; i++) {
-		print_yellow("Kuukausi %d:", i);
+		if (in[i]->amount_total == 0)
+			continue;
+		print_magenta("%s:", months[i]);
 		print_training_data(in[i], include_distance);
 	}
-	print_yellow("Yhteensä:");
+
+	print_cyan("%s:", months[0]);
 	print_training_data(in[0], include_distance);
 	return 0;
 }
