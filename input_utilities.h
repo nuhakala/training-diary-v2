@@ -14,5 +14,6 @@ char *read_double_input(char *header, double low, double up);
 char *read_string_input(char *header, int n);
 char *read_char_input(char *header, const char *options);
 char *read_time_input(char *header);
+char *read_date_input(char *default_date);
 
 #endif // INPUT_UTILITIES_H

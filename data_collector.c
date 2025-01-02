@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
 
-	input->date = (char *)malloc(11 * sizeof(char));
+	input->date = (char *)malloc(12 * sizeof(char));
 	sprintf(input->date, "%02i-%02i-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 	input->type = read_char_input(default_header_u8.type, training_types);
 	input->time = read_time_input(default_header_u8.time);
@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 	input->distance = read_double_input(default_header_u8.distance, 0.0, 300.0);
 	input->evaluation = read_int_input(default_header_u8.evaluation, 1, 5);
 	input->description = read_string_input(default_header_u8.description, 300);
+	input->date = read_date_input(input->date);
 
 	d_printf("Input asked and parsed\n");
 

@@ -38,6 +38,24 @@ char *read_time_input(char *header)
 	}
 }
 
+char *read_date_input(char *default_date)
+{
+	char *p;
+	while (1) {
+		read_first_n(stdin, &p, 11, default_date);
+		int d = 0, m = 0, y = 0;
+		int a = sscanf(p, "%d-%d-%d", &d, &m, &y);
+		if (a == -1) { // allow empty input
+			strcpy(p, default_date);
+			return p;
+		}
+		if (a >= 1 && d > 0 && d < 32 && m > 0 && m < 13 && y > 2000 && y < 2100) {
+			sprintf(p, "%02d-%02d-%d", d, m, y);
+			return p;
+		}
+	}
+}
+
 char *read_string_input(char *header, int n)
 {
 	char *p;
@@ -136,3 +154,32 @@ int read_last_n(FILE *in, char **out, int n, char *header)
 	free(buffer);
 	return characters;
 }
+
+// Create tmp file for editing input, not used atm
+/* int create_tmp_file(struct csv_line_u8 *input)
+{
+	FILE *tmp = tmpfile();
+	if (tmp == NULL) {
+		printf("Unable to create temp file");
+		return 0;
+	}
+	d_printf("Temporary file is created\n");
+
+	// Instructions
+	fprintf(tmp, "# Jokainen avain-arvo pari omalle riville.\n");
+	fprintf(tmp, "# Älä laita väärää arvoa, koska niitä ei tarkisteta.\n");
+	fprintf(tmp, "# Älä muokkaa kaksoispisteen vasenta puolta.\n");
+	fprintf(tmp, "# Älä käytä pilkkuja, koska ne sotkee CSV tiedoston.\n\n");
+
+	struct csv_line_u8 dh = default_header_u8;
+	fprintf(tmp, "%s >>> %s\n", dh.date, input->date);
+	fprintf(tmp, "%s >>> %s\n", dh.type, input->type);
+	fprintf(tmp, "%s >>> %s\n", dh.time, input->time);
+	fprintf(tmp, "%s >>> %s\n", dh.heart_rate, input->heart_rate);
+	fprintf(tmp, "%s >>> %s\n", dh.heart_rate_max, input->heart_rate_max);
+	fprintf(tmp, "%s >>> %s\n", dh.distance, input->distance);
+	fprintf(tmp, "%s >>> %s\n", dh.evaluation, input->evaluation);
+	fprintf(tmp, "%s >>> %s\n", dh.description, input->description);
+
+	return 1;
+} */
