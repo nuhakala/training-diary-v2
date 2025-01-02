@@ -1,4 +1,4 @@
-Päivämäärä [dd-mm-yyyy],Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u')],Kesto [mmm:ss],Syke avg,Syke max,Matka [km],Arvio omasta jaksamisesta [1-5],Kuvaus
+Päivämäärä [dd-mm-yyyy],Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u') | Sisäliikunta('s')],Kesto [mmm:ss],Syke avg,Syke max,Matka [km],Arvio omasta jaksamisesta [1-5],Kuvaus
 09-01-2024,y,52.00,,,,2,Olkapäänjumppaus+kädet+punnerruksia
 13-01-2024,a,48.00,,,,4,cleansquat+askelkyykky+loppuun vähän penaa ja dippejä
 14-01-2024,y,85.10,109,136,,5,olkapäänjumppaus+kädet+keskivartalo

@@ -182,9 +182,15 @@ int print_training_data(struct training_data *data, int include_distance)
 struct training_data **initialize_data_array(char *type, int n)
 {
 	struct training_data **a = malloc(n * sizeof(struct training_data *));
+	if (!a) {
+		printf("Malloc failed, aborting\n");
+	}
 	// struct training_data a[n];
 	for (int i = 0; i < n; i++) {
 		struct training_data *d = malloc(sizeof(struct training_data));
+		if (!d) {
+			printf("Malloc failed, aborting\n");
+		}
 		struct training_data t = empty_data(type);
 		memcpy(d, &t, sizeof(struct training_data));
 		a[i] = d;

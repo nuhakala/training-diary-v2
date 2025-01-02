@@ -21,11 +21,12 @@ statistics()
 	fi
 }
 
-if [ $# -eq 0 ]; then
+usage()
+{
 	echo "Usage:"
 	echo "Collect data: collect <optional:file_name>"
 	echo "Print statistics: stat <optional:file_name>"
-fi
+}
 
 source_dir=./
 if [ "$1" = "collect" ]; then
@@ -34,5 +35,7 @@ if [ "$1" = "collect" ]; then
 elif [ "$1" = "stat" ]; then
 	cd ${source_dir}
 	statistics $2
+else
+	usage
 fi
 

@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 	fp = fopen(file_name, "r");
 	if (!fp) {
-		printf("File not found");
+		printf("File %s not found, aborting program", file_name);
 		return -1;
 	}
 
@@ -46,9 +46,13 @@ int main(int argc, char *argv[])
 	struct training_data **indoor = initialize_data_array(INDOOR, 13);
 	struct training_data all = empty_data("0")
 
-		while (getline(&buff, &l, fp) >= 0)
+	d_printf("Entering line-reading loop\n");
+	struct csv_line_u8 *line = malloc(sizeof(struct csv_line_u8));
+	while (getline(&buff, &l, fp) >= 0)
 	{
-		struct csv_line_u8 *line = malloc(sizeof(struct csv_line_u8));
+		if (!line) {
+			printf("Malloc failed, aborting\n");
+		}
 		parse_csv_line_u8(buff, line);
 
 		aggregate_data_points(&all, line);
@@ -67,8 +71,8 @@ int main(int argc, char *argv[])
 		} else if (compare_strings_u8(line->type, INDOOR)) {
 			aggregate_data_points_array(indoor, line);
 		}
-		free_csv_line(line);
 	}
+	free_csv_line(line);
 	d_printf("File read and data collected\n");
 
 	print_green("Tiedoston %s tilastot:", file_name);
@@ -99,5 +103,9 @@ int main(int argc, char *argv[])
 	free_data_array(crossfit, 13);
 	free_data_array(swim, 13);
 	free_data_array(indoor, 13);
+	
+	printf("Paina mitä vain poistuaksesi");
+	char x;
+	scanf("%c", &x);
 	return 0;
 }
