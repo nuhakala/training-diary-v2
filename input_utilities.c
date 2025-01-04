@@ -44,7 +44,7 @@ char *read_date_input(char *default_date)
 	while (1) {
 		read_first_n(stdin, &p, 11, default_date);
 		int d = 0, m = 0, y = 0;
-		int a = sscanf(p, "%d-%d-%d", &d, &m, &y);
+		int a = sscanf(p, "%d.%d.%d", &d, &m, &y);
 		if (a == -1) { // allow empty input
 			strcpy(p, default_date);
 			return p;

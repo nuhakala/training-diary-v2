@@ -10,9 +10,24 @@
 #include "csv_utilities.h"
 #include "utf8.h"
 
+// Header constants, names are little misleading :(
+
+// The header constants that are asked from the user
 struct csv_line_u8 default_header_u8 = {
 	.date = "Päivämäärä [dd-mm-yyyy]",
 	.type = "Tyyppi [Juoksu('j') | Sali ylävartalo('y') | Sali jalat('a') | Hiihto('h') | Kävely('k') | Crossfit('c') | Uinti('u') | Sisäliikunta('s')]",
+	.time = "Kesto [mmm:ss]",
+	.heart_rate = "Syke avg",
+	.heart_rate_max = "Syke max",
+	.distance = "Matka [km]",
+	.evaluation = "Arvio omasta jaksamisesta [1-5]",
+	.description = "Kuvaus",
+};
+
+// The header constants that are written to file, and should also be present in file
+struct csv_line_u8 correct_header = {
+	.date = "Päivämäärä [dd-mm-yyyy]",
+	.type = "Tyyppi [kirjain]",
 	.time = "Kesto [mmm:ss]",
 	.heart_rate = "Syke avg",
 	.heart_rate_max = "Syke max",
@@ -77,19 +92,15 @@ int free_csv_line(struct csv_line_u8 *line)
  */
 int check_header_u8(struct csv_line_u8 *header)
 {
-	assert(compare_strings_u8(header->date, default_header_u8.date));
-	assert(compare_strings_u8(header->type, default_header_u8.type));
-	assert(compare_strings_u8(header->time, default_header_u8.time));
-	assert(compare_strings_u8(header->heart_rate,
-				  default_header_u8.heart_rate));
-	assert(compare_strings_u8(header->heart_rate_max,
-				  default_header_u8.heart_rate_max));
-	assert(compare_strings_u8(header->distance,
-				  default_header_u8.distance));
-	assert(compare_strings_u8(header->evaluation,
-				  default_header_u8.evaluation));
-	assert(compare_strings_u8(header->description,
-				  default_header_u8.description));
+	printf("header: %s, correct: %s\n", header->type, correct_header.type);
+	assert(compare_strings_u8(header->date, correct_header.date));
+	assert(compare_strings_u8(header->type, correct_header.type));
+	assert(compare_strings_u8(header->time, correct_header.time));
+	assert(compare_strings_u8(header->heart_rate, correct_header.heart_rate));
+	assert(compare_strings_u8(header->heart_rate_max, correct_header.heart_rate_max));
+	assert(compare_strings_u8(header->distance, correct_header.distance));
+	assert(compare_strings_u8(header->evaluation, correct_header.evaluation));
+	assert(compare_strings_u8(header->description, correct_header.description));
 	return 0;
 }
 
@@ -100,14 +111,14 @@ int write_csv_line(struct csv_line_u8 *line, char *file_name)
 	// Initialize header if file does not exist
 	if (access(file_name, F_OK) != 0) {
 		fptr = fopen(file_name, "a");
-		fprintf(fptr, "%s,", default_header_u8.date);
-		fprintf(fptr, "%s,", default_header_u8.type);
-		fprintf(fptr, "%s,", default_header_u8.time);
-		fprintf(fptr, "%s,", default_header_u8.heart_rate);
-		fprintf(fptr, "%s,", default_header_u8.heart_rate_max);
-		fprintf(fptr, "%s,", default_header_u8.distance);
-		fprintf(fptr, "%s,", default_header_u8.evaluation);
-		fprintf(fptr, "%s\n", default_header_u8.description);
+		fprintf(fptr, "%s,", correct_header.date);
+		fprintf(fptr, "%s,", correct_header.type);
+		fprintf(fptr, "%s,", correct_header.time);
+		fprintf(fptr, "%s,", correct_header.heart_rate);
+		fprintf(fptr, "%s,", correct_header.heart_rate_max);
+		fprintf(fptr, "%s,", correct_header.distance);
+		fprintf(fptr, "%s,", correct_header.evaluation);
+		fprintf(fptr, "%s\n", correct_header.description);
 	}
 
 	// write the actual content
