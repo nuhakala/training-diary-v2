@@ -19,6 +19,14 @@ int test_parse_seconds_from_string()
 			input, output);
 		return -1;
 	}
+	strcpy(input, "12");
+	parse_seconds_from_string(input, &output);
+	if (output != 720) {
+		print_red(
+			"Parse seconds from string failed with input %s and output %d",
+			input, output);
+		return -1;
+	}
 	strcpy(input, "-12.32");
 	if (parse_seconds_from_string(input, &output) >= 0) {
 		print_red(
