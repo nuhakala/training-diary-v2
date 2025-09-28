@@ -67,7 +67,13 @@ int parse_csv_line_u8(char *line, struct csv_line_u8 *out)
 		}
 	} while (current != '\n');
 
-	assert(num_columns == NUM_HEADERS);
+	if (num_columns != NUM_HEADERS) {
+		printf("Error while parsing line: %s\n", line);
+		printf("The line has wrong number of columns\n");
+		printf("Detected columns: %d, should have %d\n", num_columns, NUM_HEADERS);
+		printf("Most likely you have added extra comma in description.\n");
+		assert(num_columns == NUM_HEADERS);
+	}
 	return 0;
 }
 

@@ -115,6 +115,7 @@ int u8_toucs(u_int32_t *dest, int sz, char *src, int srcsz)
     return i;
 }
 
+// Returns 0 if strings are different, 1 if they are the same
 int compare_strings_u8(char * a, char * b)
 {
 	int a_len = u8_strlen(a);

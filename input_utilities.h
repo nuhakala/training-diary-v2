@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include <wchar.h>
-
-#define BUF_SIZE 10;
+#include "csv_utilities.h"
 
 int read_last_n(FILE *in, char **out, int n, char *header);
 int read_first_n(FILE *in, char **out, int n, char *header);
@@ -15,5 +14,8 @@ char *read_string_input(char *header, int n);
 char *read_char_input(char *header, const char *options);
 char *read_time_input(char *header);
 char *read_date_input(char *default_date);
+
+int create_tmp_file(struct csv_line_u8 *input, char * tmp_name);
+int parse_tmp_file(char * tmp_name, struct csv_line_u8 *output);
 
 #endif // INPUT_UTILITIES_H

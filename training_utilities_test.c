@@ -1,10 +1,8 @@
 #include <string.h>
-#include <wchar.h>
 #include <stdlib.h>
 
 #include "training_utilities.h"
 #include "csv_utilities.h"
-#include "test_utilities.h"
 #include "print_utilities.h"
 
 int test_parse_seconds_from_string()

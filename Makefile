@@ -1,16 +1,24 @@
-all:
-	gcc -Wall -DDEBUG statistics_tool.c csv_utilities.c training_utilities.c utf8.c windows_types.c -o statistics_tool.o
-	gcc -Wall -DDEBUG data_collector.c csv_utilities.c training_utilities.c input_utilities.c utf8.c windows_types.c -o data_collector.o
+# Choose whether to use debug flags
+# CFLAGS=-Wall -DDEBUG
+CFLAGS=-Wall
 
-build:
-	gcc -Wall statistics_tool.c csv_utilities.c training_utilities.c utf8.c windows_types.c -o statistics_tool.o
-	gcc -Wall data_collector.c csv_utilities.c training_utilities.c input_utilities.c utf8.c windows_types.c -o data_collector.o
+STATISTICS_TOOL_OBJS=statistics_tool.o csv_utilities.o training_utilities.o utf8.o windows_types.o
+TRAINING_TOOL_OBJS=data_collector.o csv_utilities.o training_utilities.o input_utilities.o utf8.o windows_types.o
+TEST_OBJS=training_utilities_test.o training_utilities.o
 
-test:
-	gcc -Wall -DDEBUG training_utilities_test.c training_utilities.c -o training_utilities_test.o
+all: statistics training
+
+statistics: $(STATISTICS_TOOL_OBJS)
+	gcc $(CFLAGS) $(STATISTICS_TOOL_OBJS) -o statistics_tool.out
+
+training: $(TRAINING_TOOL_OBJS)
+	gcc $(CFLAGS) $(TRAINING_TOOL_OBJS) -o data_collector.out
+
+test: $(TEST_OBJS)
+	gcc $(CFLAGS) $(TEST_OBJS) -o training_utilities_test.out
 	# run valgrind to see that there is no leaks in the tested code either
-	valgrind --leak-check=full ./training_utilities_test.o
-	# ./training_utilities_test.o
+	valgrind --leak-check=full ./training_utilities_test.out
+	./training_utilities_test.out
 
 clear:
 	rm ./*.o

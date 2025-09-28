@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	printf("testi: %s", buff);
+
 	struct csv_line_u8 *header = malloc(sizeof(struct csv_line_u8));
 	parse_csv_line_u8(buff, header);
 	check_header_u8(header);
